@@ -13,7 +13,7 @@ module.exports = (function makeWebpackConfig () {
 
   config.entry = {
     app: './src/app/app.js',
-    vendor: './src/app/vendor'
+    vendor: './src/vendor/index.js'
   };
 
   config.output = {
@@ -65,7 +65,7 @@ module.exports = (function makeWebpackConfig () {
   config.plugins.push(
     new HtmlWebpackPlugin({
       hash: true,
-      template: './src/_public/index.html',
+      template: './src/templates/index.html',
       inject: 'body'
     })
   );

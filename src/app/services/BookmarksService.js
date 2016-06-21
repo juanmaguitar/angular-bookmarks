@@ -1,4 +1,4 @@
-class Bookmarks {
+class BookmarksSrv {
 
   constructor ($http, $q) {
   	this.urlFetch ='data/bookmarks.json';
@@ -29,7 +29,7 @@ class Bookmarks {
 		var deferred = $q.defer();
 		const hasId = (bookmark) => bookmark.id === parseInt(bookmarkId, 10);
 		const findBookmark = () => _.find(bookmarks, hasId)
-		var bookmarkFound = findBookmark(bookmarkId);
+		var bookmarkFound = findBookmark();
 
     if (this.bookmarks) {
       deferred.resolve( bookmarkFound )
@@ -58,7 +58,7 @@ class Bookmarks {
     });
   };
 
-	getBookmarksForCategory = function (category) {
+	getBookmarksForCategory(category) {
 	  _.filter(bookmarks, function (b) {
 	    return b.category == category;
 	  });
@@ -66,6 +66,6 @@ class Bookmarks {
 
 }
 
-Bookmarks.$inject = ['$http', '$q'];
+BookmarksSrv.$inject = ['$http', '$q'];
 
-export default Bookmarks;
+export default BookmarksSrv;

@@ -1,4 +1,4 @@
-class Categories {
+class CategoriesSrv {
 
   constructor ($http, $q) {
   	this.urlFetch = 'data/categories.json';
@@ -66,59 +66,22 @@ class Categories {
   getCategoryByName(categoryName) {
 		var deferred = $q.defer();
 		const hasName = (category) => category.name == categoryName;
-		const findCategory = (bookmarkId) => _.find(bookmarks, hasId)
-
-		function findCategory() {
-		  return _.find(categories, function (c) {
-		    return c.name == categoryName;
-		  })
-		}
+		const findCategory = () => _.find(categories, hasName)
+		var categoryFound = findCategory();
 
 		if (categories) {
-		  deferred.resolve(findCategory());
+		  deferred.resolve( categoryFound );
 		} else {
-		  categoriesModel.getCategories().then(function () {
-		    deferred.resolve(findCategory());
-		  })
+		  this.getCategories()
+				.then( () => deferred.resolve( categoryFound ) )
 		}
 
 		return deferred.promise;
+
 	};
 
+}
 
+CategoriesSrv.$inject = ['$http', '$q'];
 
-
-
-function CategoriesService($http, $q) {
-    var URLS = {
-        FETCH: 'data/categories.json'
-      },
-      categories,
-      currentCategory,
-      categoriesModel = this;
-
-
-
-
-    categoriesModel.getCategoryByName = function (categoryName) {
-      var deferred = $q.defer();
-
-      function findCategory() {
-        return _.find(categories, function (c) {
-          return c.name == categoryName;
-        })
-      }
-
-      if (categories) {
-        deferred.resolve(findCategory());
-      } else {
-        categoriesModel.getCategories().then(function () {
-          deferred.resolve(findCategory());
-        })
-      }
-
-      return deferred.promise;
-    };
-
-  })
-;
+export default CategoriesSrv;
