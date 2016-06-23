@@ -1,26 +1,23 @@
 // Styles
 import 'bootstrap/dist/css/bootstrap.css';
-import '../assets/css/app.scss';
+import '../css/app.scss';
 
 // JS App
 import angular from 'angular';
 import ngUiRoute from 'angular-ui-router';
 import ngAnimate from 'angular-animate';
 
-import bookmarks from './bookmarks';
 import services from './services';
-
-import bookmarksEdit from './bookmarks/edit';
-import bookmarksCreate from './bookmarks/create';
+import categories from './categories';
+import bookmarks from './bookmarks';
 
 import routing from './routing.js';
 
-angular.module('Eggly', [
+angular.module('eggly', [
 		ngAnimate,
 		ngUiRoute,
 		services,
-		bookmarks,
-		bookmarksEdit,
-		bookmarksCreate
+		categories,
+		bookmarks
 	])
   .config( routing );

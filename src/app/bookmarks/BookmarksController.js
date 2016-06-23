@@ -1,23 +1,29 @@
 class BookmarksCtrl {
-	constructor( $scope, $stateParams, bookmarksSrv, categoriesSrv )	{
+	constructor( $stateParams, bookmarksSrv, categoriesSrv )	{
 
-		categories.setCurrentCategory();
+    const setCategory =  (category) => categoriesSrv.setCurrentCategory(category);
+    const getBookmarksCategory =  (category) => bookmarksSrv.getBookmarksForCategory(category);
+    const scopeBookmarks = (bookmarks) => this.bookmarks = bookmarks;
+    const currentCategory = $stateParams.category || "";
 
-    if ($stateParams.category) {
-      categories.getCategoryByName($stateParams.category)
-      	.then( (category) => categories.setCurrentCategory(category) )
+    if (currentCategory) {
+      categoriesSrv.getCategoryByName( $stateParams.category )
+      	.then( setCategory )
+        .then( getBookmarksCategory.bind(null,currentCategory) )
+        .then( scopeBookmarks )
+    }
+    else {
+      bookmarksSrv.getBookmarks().then( scopeBookmarks )
     }
 
-    bookmarks.getBookmarks()
-      .then( (result) => this.bookmarks = result );
-
-    this.getCurrentCategory = categories.getCurrentCategory;
-    this.getCurrentCategoryName = categories.getCurrentCategoryName;
+    this.getCurrentCategory = categoriesSrv.getCurrentCategory;
+    this.getCurrentCategoryName = categoriesSrv.getCurrentCategoryName;
     this.isSelectedBookmark = (bookmarkId) => $stateParams.bookmarkId == bookmarkId;
-    this.deleteBookmark = bookmarks.deleteBookmark;
+    this.deleteBookmark = bookmarksSrv.deleteBookmark;
+
 	}
 }
 
-BookmarksCtrl.$inject = ['$scope', '$stateParams', 'bookmarksService', 'categoriesService'];
+BookmarksCtrl.$inject = [ '$stateParams', 'bookmarksService', 'categoriesService'];
 
 export default BookmarksCtrl;

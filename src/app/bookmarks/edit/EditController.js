@@ -4,6 +4,8 @@ class EditCtrl {
 
 		this.isEditing = false;
 
+		console.log("EditCtrl...");
+
     function returnToBookmarks() {
       $state.go('eggly.categories.bookmarks', {
         category: $stateParams.category

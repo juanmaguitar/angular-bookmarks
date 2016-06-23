@@ -89,10 +89,10 @@ module.exports = (function makeWebpackConfig () {
       new webpack.NoErrorsPlugin(),
       new webpack.optimize.DedupePlugin(),
       new webpack.optimize.UglifyJsPlugin(),
-      new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
+      new webpack.optimize.CommonsChunkPlugin('vendor', 'js/vendor.js'),
       new CopyWebpackPlugin( [
-          { from: path.resolve(__dirname, './src/_public/data'), to: 'data' },
-          { from: path.resolve(__dirname, './src/_public/img'), to: 'img' }
+          { from: path.resolve(__dirname, './src/data'), to: 'data' },
+          { from: path.resolve(__dirname, './src/img'), to: 'img' }
         ],
         { ignore: ['*.html'] }
       )
@@ -109,7 +109,7 @@ module.exports = (function makeWebpackConfig () {
   }
 
   config.devServer = {
-    contentBase: './src/_public',
+    contentBase: './src/',
     stats: 'minimal'
   };
 

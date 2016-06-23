@@ -4,13 +4,10 @@ class CategoriesSrv {
   	this.urlFetch = 'data/categories.json';
   	this.$http = $http;
   	this.$q = $q;
-  	this.categories = [];
-		this.currentCategory;
 	}
 
 	getCategories() {
-
-		function cacheCategories(result) { 
+		const cacheCategories = (result) => { 
 			const extract = (result) => result.data;
 			this.categories = extract(result);
 			return this.categories;
@@ -64,12 +61,12 @@ class CategoriesSrv {
   };
 
   getCategoryByName(categoryName) {
-		var deferred = $q.defer();
 		const hasName = (category) => category.name == categoryName;
-		const findCategory = () => _.find(categories, hasName)
-		var categoryFound = findCategory();
+		const findCategory = () => _.find(this.categories, hasName)
+		const categoryFound = findCategory();
+		let deferred = this.$q.defer();
 
-		if (categories) {
+		if (this.categories) {
 		  deferred.resolve( categoryFound );
 		} else {
 		  this.getCategories()
