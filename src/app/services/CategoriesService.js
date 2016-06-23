@@ -69,33 +69,7 @@ class CategoriesSrv {
 		this.deleteCategory = deleteCategory;
 		this.getCategoryByName = getCategoryByName;
 
-
 	}
-
-
-
-
-
-
-
-
-
-	// getBookmarkById(bookmarkId) {
-	// 	var deferred = $q.defer();
-	// 	const hasId = (bookmark) => bookmark.id === parseInt(bookmarkId, 10);
-	// 	const findBookmark = (bookmarkId) => _.find(bookmarks, hasId)
-	// 	var bookmarkFound = findBookmark(bookmarkId);
-
- //    if (this.bookmarks) {
- //      deferred.resolve( bookmarkFound )
- //    } else {
- //      this.getBookmarks()
- //      	.then( () => deferred.resolve( bookmarkFound ) )
- //    }
- //    return deferred.promise;
- //  };
-
-
 
 }
 

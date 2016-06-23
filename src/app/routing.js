@@ -8,10 +8,9 @@ const url = '/';
 const abstract = true;
 
 function routing ( $stateProvider, $urlRouterProvider ) {
-	//$stateProvider.state('eggly', { url, abstract });
 	$stateProvider
 		.state('eggly', {
-			url, /* abstract, */
+			url,
 			views: {
 				'categories': {
 					controller: categoriesCtrl,
@@ -32,29 +31,3 @@ function routing ( $stateProvider, $urlRouterProvider ) {
 routing.$inject = ['$stateProvider', '$urlRouterProvider'];
 
 export default routing;
-
-
-// function routing ($stateProvider) {
-// 	$stateProvider
-// 		.state('eggly.categories', {
-// 			url: '/',
-// 			views: {
-// 				'categories@': {
-// 					controller: categoriesCtrl,
-// 					template: categoriesTpl,
-// 					controllerAs: '$ctrl'
-// 				},
-// 				'bookmarks@': {
-// 					controller: bookmarksCtrl,
-// 					template: bookmarksTpl,
-// 					controllerAs: '$ctrl'
-// 				}
-// 			}
-// 		});
-// }
-
-// routing.$inject = ['$stateProvider'];
-
-// export default routing;
-
-
