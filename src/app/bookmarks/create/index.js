@@ -6,9 +6,9 @@ import CreateController from './CreateController.js';
 import routing from './routing.js';
 
 
-angular.module('eggly.bookmarks.edit', [ ngUiRoute, services ])
+angular.module('eggly.bookmarks.create', [ ngUiRoute, services ])
 	.controller( 'createController', CreateController)
   .config( routing )
 
-export default 'eggly.bookmarks.edit';
+export default 'eggly.bookmarks.create';
 

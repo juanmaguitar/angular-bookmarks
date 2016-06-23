@@ -24,25 +24,6 @@ class BookmarksSrv {
 		}
 	};
 
-	getBookmarkById(bookmarkId) {
-		let deferred = this.$q.defer();
-		const hasId = (bookmark) => {
-			console.log("bookmarkId: %s", bookmarkId)
-			console.log("bookmark: %o", bookmark)
-			bookmark.id === parseInt(bookmarkId, 10);
-		}
-		const findBookmark = () => _.find(this.bookmarks, hasId)
-		let bookmarkFound = findBookmark();
-
-		if (this.bookmarks) {
-			deferred.resolve( bookmarkFound )
-		} else {
-			this.getBookmarks()
-				.then( () => deferred.resolve( bookmarkFound ) )
-		}
-		return deferred.promise;
-	};
-
 	createBookmark(bookmark) {
 		const id = this.bookmarks.length;
 		this.bookmarks.push( {id} );
@@ -59,6 +40,13 @@ class BookmarksSrv {
 		_.remove(this.bookmarks, function (b) {
 			return b.id == bookmark.id;
 		});
+	};
+
+	getBookmarkById(bookmarkId) {
+		const byId = (bookmark) => bookmark.id == parseInt(bookmarkId, 10);
+		const getById = (bookmarks) => this.bookmarks.find( byId );
+		return this.getBookmarks()
+							.then( getById );
 	};
 
 	getBookmarksForCategory(category) {

@@ -1,7 +1,10 @@
 class BookmarksCtrl {
 	constructor( $stateParams, bookmarksSrv, categoriesSrv )	{
 
-    const setCategory =  (category) => categoriesSrv.setCurrentCategory(category);
+    const setCategory =  (category) => {
+    	console.log(category)
+    	return categoriesSrv.setCurrentCategory(category);
+    }
     const getBookmarksCategory =  (category) => bookmarksSrv.getBookmarksForCategory(category);
     const scopeBookmarks = (bookmarks) => this.bookmarks = bookmarks;
     const currentCategory = $stateParams.category || "";

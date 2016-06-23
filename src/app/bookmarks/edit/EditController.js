@@ -4,34 +4,32 @@ class EditCtrl {
 
 		this.isEditing = false;
 
-		console.log("EditCtrl...");
-
-    function returnToBookmarks() {
-      $state.go('eggly.categories.bookmarks', {
-        category: $stateParams.category
+    const returnToBookmarks = () =>{
+      $state.go('eggly.bookmarks', {
+        category: this.bookmark.category
       })
     }
 
-    function setEditState(bookmark) {
+    const setEditState = (bookmark) => {
       if (bookmark) {
         this.isEditing = true;
         this.bookmark = bookmark;
         this.editedBookmark = angular.copy(this.bookmark);
       }
       else {
-        returnToBookmarks();
+        this.returnToBookmarks();
       }
     }
 
-    function updateBookmark() {
+    const updateBookmark = () => {
       this.bookmark = angular.copy(this.editedBookmark);
-      bookmarks.updateBookmark(this.editedBookmark);
-      returnToBookmarks();
+      bookmarksSrv.updateBookmark(this.editedBookmark);
+      this.returnToBookmarks();
     }
 
-    function cancelEditing() {
+    const cancelEditing = () => {
       this.isEditing = false;
-      returnToBookmarks();
+      this.returnToBookmarks();
     }
 
     bookmarksSrv.getBookmarkById($stateParams.bookmarkId)
@@ -40,6 +38,8 @@ class EditCtrl {
     this.toggleEditing = () => this.isEditing = !this.isEditing;
     this.cancelEditing = cancelEditing;
     this.updateBookmark = updateBookmark;
+    this.setEditState = setEditState;
+    this.returnToBookmarks = returnToBookmarks;
 
 	}
 

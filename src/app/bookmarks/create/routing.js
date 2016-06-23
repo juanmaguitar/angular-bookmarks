@@ -3,9 +3,9 @@ const controller = 'createController';
 const controllerAs = '$ctrl';
 
 function routing ($stateProvider) {
-  $stateProvider.state('eggly.categories.bookmarks.create', {
+  $stateProvider.state('eggly.bookmarks.create', {
     url: '/bookmarks/create',
-    views: { '@eggly.categories.bookmarks': { controller, template, controllerAs } }
+    views: { 'bookmarks@': { controller, template, controllerAs } }
   });
 }
 

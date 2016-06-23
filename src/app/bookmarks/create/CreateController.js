@@ -4,23 +4,26 @@ class CreateCtrl {
 
     this.isCreating = false;
 
-    function returnToBookmarks() {
+		console.log ($stateParams)
+		console.log ($state)
+
+    const returnToBookmarks = () => {
       $state.go('eggly.categories.bookmarks', {
         category: $stateParams.category
       })
     }
 
-    function cancelCreating() {
+    const cancelCreating = () => {
       this.isCreating = false;
-      returnToBookmarks();
+      this.returnToBookmarks();
     }
 
-    function createBookmark() {
+    const createBookmark = () => {
       bookmarksSrv.createBookmark(this.newBookmark);
-      returnToBookmarks();
+      this.returnToBookmarks();
     }
 
-    function resetForm() {
+    const resetForm = () => {
       this.newBookmark = {
         title: '',
         url: '',
@@ -28,9 +31,11 @@ class CreateCtrl {
       };
     }
 
-    this.toggleCreating = () => this.isCreating = !this.isCreating;
+    const toggleCreating = () => this.isCreating = !this.isCreating;
+
     this.cancelCreating = cancelCreating;
     this.createBookmark = createBookmark;
+		this.returnToBookmarks = returnToBookmarks;
 
     resetForm();
     toggleCreating();
@@ -38,3 +43,8 @@ class CreateCtrl {
   }
 
 }
+
+CreateCtrl.$inject = ['$stateParams', '$state', 'bookmarksService'];
+
+export default CreateCtrl;
+

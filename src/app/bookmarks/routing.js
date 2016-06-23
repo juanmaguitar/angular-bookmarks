@@ -30,7 +30,7 @@ function routing ($stateProvider) {
   $stateProvider
 	  .state('eggly.bookmarks.edit', {
 	    url: '/bookmarks/:bookmarkId/edit',
-	    views: { 'bookmarks@': { controller, template, controllerAs } }
+	    views: { 'bookmarks@action': { controller, template, controllerAs } }
 	  });
 }
 
