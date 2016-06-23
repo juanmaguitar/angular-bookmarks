@@ -26,7 +26,8 @@ class BookmarksSrv {
 
 	createBookmark(bookmark) {
 		const id = this.bookmarks.length;
-		this.bookmarks.push( {id} );
+		const newBookmark = Object.assign( {id}, bookmark )
+		this.bookmarks.push( newBookmark );
 	};
 
 	updateBookmark(bookmark) {

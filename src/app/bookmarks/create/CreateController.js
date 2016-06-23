@@ -4,12 +4,9 @@ class CreateCtrl {
 
     this.isCreating = false;
 
-		console.log ($stateParams)
-		console.log ($state)
-
     const returnToBookmarks = () => {
-      $state.go('eggly.categories.bookmarks', {
-        category: $stateParams.category
+      $state.go('eggly.bookmarks', {
+        category: $state.globals.params.category
       })
     }
 
@@ -20,6 +17,7 @@ class CreateCtrl {
 
     const createBookmark = () => {
       bookmarksSrv.createBookmark(this.newBookmark);
+      console.log("sssss");;
       this.returnToBookmarks();
     }
 
@@ -27,7 +25,7 @@ class CreateCtrl {
       this.newBookmark = {
         title: '',
         url: '',
-        category: $stateParams.category
+        category: $state.globals.params.category
       };
     }
 
