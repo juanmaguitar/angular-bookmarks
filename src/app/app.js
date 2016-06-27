@@ -1,5 +1,4 @@
 // Styles
-import 'bootstrap/dist/css/bootstrap.css';
 import '../css/app.scss';
 
 // JS App

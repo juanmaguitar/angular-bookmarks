@@ -1,3 +1,5 @@
 import 'angular';
-import 'angular-route';
-import 'angular-resource';
+import 'angular-ui-router';
+import 'angular-animate';
+
+import 'bootstrap/dist/css/bootstrap.css';

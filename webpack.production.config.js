@@ -1,22 +1,21 @@
-var webpack = require('webpack');
+var path = require('path')
+var webpack = require('webpack')
+var autoprefixer = require('autoprefixer')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var precss = require('precss');
-var autoprefixer = require('autoprefixer');
-var path = require('path');
 
 module.exports = {
-	devtool: 'cheap-module-eval-source-map',
+	devtool: 'source-map',
 	entry: {
 		app: './src/app/app.js',
     vendor: './src/vendor/index.js'
 	},
 	output: {
-		path: path.join(__dirname),
-		filename: 'js/[name].[hash].js',
-		chunkFilename: 'js/[name].[hash].js',
-		publicPath: 'http://localhost:8080/'
+		path: path.resolve(__dirname, './dist'),
+		filename: 'js/[name].bundle.js',
+		chunkFilename: 'js/[name].bundle.js',
+		publicPath: ''
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
@@ -25,9 +24,18 @@ module.exports = {
 			filename: 'index.html',
 			hash: true
 		}),
+		new webpack.NoErrorsPlugin(),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.CommonsChunkPlugin('vendor', 'js/vendor.js'),
+    new CopyWebpackPlugin( [
+        { from: path.resolve(__dirname, './src/data'), to: 'data' },
+        { from: path.resolve(__dirname, './src/img'), to: 'img' }
+      ],
+      { ignore: ['*.html'] }
+    ),
 		new webpack.optimize.OccurenceOrderPlugin(),
-		new webpack.HotModuleReplacementPlugin(),
-		new webpack.NoErrorsPlugin()
+		new ExtractTextPlugin('css/styles-[hash].css', { allChunks: true })
 	],
 	module: {
 		loaders: [{
@@ -36,7 +44,7 @@ module.exports = {
 			loaders: ['babel?presets[]=es2015']
 		}, {
 			test: /\.(css|scss)?$/,
-			loader: "style!css!sass!postcss"
+			loader: ExtractTextPlugin.extract("style", "!css!sass!postcss")
 		}, {
 			test: /\.(png|jpg|jpeg|gif)$/,
 			loader: 'url?limit=25000'
@@ -51,9 +59,5 @@ module.exports = {
 	},
 	postcss: function () {
 		return [autoprefixer]
-	},
-	devServer : {
-    contentBase: './src/',
-    stats: 'minimal'
-  }
+	}
 }
