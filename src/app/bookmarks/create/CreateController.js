@@ -17,7 +17,6 @@ class CreateCtrl {
 
     const createBookmark = () => {
       bookmarksSrv.createBookmark(this.newBookmark);
-      console.log("sssss");;
       this.returnToBookmarks();
     }
 

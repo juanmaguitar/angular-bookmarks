@@ -31,16 +31,13 @@ class BookmarksSrv {
 	};
 
 	updateBookmark(bookmark) {
-		let index = _.findIndex(this.bookmarks, function (b) {
-			return b.id == bookmark.id
-		});
+		const hasId = (b) => b.id == bookmark.id;
+		let index = this.bookmarks.findIndex(hasId);
 		this.bookmarks[index] = bookmark;
 	};
 
 	deleteBookmark(bookmark) {
-		_.remove(this.bookmarks, function (b) {
-			return b.id == bookmark.id;
-		});
+		this.bookmarks = this.bookmarks.filter( (b) => b.id !== bookmark.id )
 	};
 
 	getBookmarkById(bookmarkId) {

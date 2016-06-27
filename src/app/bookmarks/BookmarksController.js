@@ -1,23 +1,12 @@
 class BookmarksCtrl {
-	constructor( $stateParams, bookmarksSrv, categoriesSrv )	{
+	constructor( $stateParams, bookmarksSrv, categoriesSrv, bookmarks )	{
 
-    const setCategory =  (category) => {
-    	console.log(category)
-    	return categoriesSrv.setCurrentCategory(category);
-    }
-    const getBookmarksCategory =  (category) => bookmarksSrv.getBookmarksForCategory(category);
-    const scopeBookmarks = (bookmarks) => this.bookmarks = bookmarks;
-    const currentCategory = $stateParams.category || "";
+		const currentCategoryName = $stateParams.category || '';
 
-    if (currentCategory) {
-      categoriesSrv.getCategoryByName( $stateParams.category )
-      	.then( setCategory )
-        .then( getBookmarksCategory.bind(null,currentCategory) )
-        .then( scopeBookmarks )
-    }
-    else {
-      bookmarksSrv.getBookmarks().then( scopeBookmarks )
-    }
+  	categoriesSrv.getCategoryByName(currentCategoryName)
+			.then(categoriesSrv.setCurrentCategory)
+
+		this.bookmarks = bookmarks;
 
     this.getCurrentCategory = categoriesSrv.getCurrentCategory;
     this.getCurrentCategoryName = categoriesSrv.getCurrentCategoryName;
@@ -27,6 +16,6 @@ class BookmarksCtrl {
 	}
 }
 
-BookmarksCtrl.$inject = [ '$stateParams', 'bookmarksService', 'categoriesService'];
+BookmarksCtrl.$inject = [ '$stateParams', 'bookmarksService', 'categoriesService', 'bookmarks'];
 
 export default BookmarksCtrl;

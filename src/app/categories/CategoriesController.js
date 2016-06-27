@@ -1,19 +1,12 @@
 class CategoriesCtrl {
 
-	constructor ( categoriesSrv ) {
-
-		this.getCurrentCategoryName = categoriesSrv.getCurrentCategoryName;
-
-		categoriesSrv.getCategories()
-			.then( (result) => this.categories = result );
-
-		this.isCurrentCategory = (category) => category.name === this.getCurrentCategoryName() ;
-
+	constructor ( categoriesSrv, categories, currentCategory ) {
+		this.categories = categories;
+		this.isCurrentCategory = (category) => category.name === currentCategory ;
   }
 
 }
 
-
-CategoriesCtrl.$inject = [ 'categoriesService' ];
+CategoriesCtrl.$inject = [ 'categoriesService', 'categories', 'currentCategory' ];
 
 export default CategoriesCtrl;

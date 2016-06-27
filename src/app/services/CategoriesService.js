@@ -1,13 +1,12 @@
 class CategoriesSrv {
 
   constructor ($http, $q) {
+
   	this.urlFetch = 'data/categories.json';
   	this.$http = $http;
   	this.$q = $q;
 
-		const getCurrentCategory = () => {
-			return this.currentCategory;
-		};
+		const getCurrentCategory = () => this.currentCategory;
 
 		const getCategories = () => {
 			const cacheCategories = (result) => { 
@@ -38,15 +37,12 @@ class CategoriesSrv {
 	    this.categories.push(category);
 	  };
 
-		const deleteCategory = (category) => {
-	    _.remove(this.categories, function (c) {
-	      return c.id == category.id;
-	    });
-	  };
+		const deleteCategory = (category) => this.categories.filter( (c) => c.id !== category.id );
 
 		const getCategoryByName = (categoryName) => {
+
 			const hasName = (category) => category.name == categoryName;
-			const findCategory = () => _.find(this.categories, hasName)
+			const findCategory = () => this.categories.find(hasName)
 			const categoryFound = findCategory();
 			let deferred = this.$q.defer();
 

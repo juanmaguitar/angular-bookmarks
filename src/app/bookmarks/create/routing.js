@@ -5,7 +5,7 @@ const controllerAs = '$ctrl';
 function routing ($stateProvider) {
   $stateProvider.state('eggly.bookmarks.create', {
     url: '/bookmarks/create',
-    views: { 'bookmarks@': { controller, template, controllerAs } }
+    views: { '@eggly.bookmarks': { controller, template, controllerAs } }
   });
 }
 

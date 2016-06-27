@@ -5,12 +5,14 @@ import bookmarksTpl from './bookmarks/bookmarks.tpl.html';
 const bookmarksCtrl =  'bookmarksController';
 
 const url = '/';
-const abstract = true;
+
+import { categories , currentCategory, bookmarks } from './resolvers.js'
 
 function routing ( $stateProvider, $urlRouterProvider ) {
 	$stateProvider
 		.state('eggly', {
 			url,
+			resolve: { categories, currentCategory, bookmarks },
 			views: {
 				'categories': {
 					controller: categoriesCtrl,

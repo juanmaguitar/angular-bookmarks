@@ -1,4 +1,4 @@
-import template from '../bookmarks/bookmarks.tpl.html';
+import template from './bookmarks.tpl.html';
 const controller =  'bookmarksController';
 const controllerAs = '$ctrl';
 
