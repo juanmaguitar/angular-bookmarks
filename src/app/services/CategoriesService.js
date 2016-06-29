@@ -2,68 +2,67 @@ class CategoriesSrv {
 
   constructor ($http, $q) {
 
-  	this.urlFetch = 'data/categories.json';
-  	this.$http = $http;
-  	this.$q = $q;
+  	this._urlFetch = 'data/categories.json';
+  	this._$http = $http;
+  	this._$q = $q;
 
-		const getCurrentCategory = () => this.currentCategory;
+  	this.categories = null;
+  	this.currentCategory = null;
 
-		const getCategories = () => {
-			const cacheCategories = (result) => { 
-				const extract = (result) => result.data;
-				this.categories = extract(result);
-				return this.categories;
-			}
+  }
 
-			if (this.categories) {
-				return this.$q.when( this.categories )
-			}
-			else {
-				return this.$http.get( this.urlFetch ).then( cacheCategories );
-			}
-		};
+	setCurrentCategory(category) {
+    this.currentCategory = category ? category : null;
+    return this.currentCategory;
+  }
 
-		const getCurrentCategoryName = () => {
-			return this.currentCategory ? this.currentCategory.name : '';
-		};
+	getCurrentCategory() {
+		return this.currentCategory;
+	}
 
-		const setCurrentCategory = (category) => {
-	    this.currentCategory = category;
-	    return this.currentCategory;
-	  };
+	getCategories() {
+		const cacheCategories = (result) => { 
+			const extract = (result) => result.data;
+			this.categories = extract(result);
+			return this.categories;
+		}
 
-		const createCategory = (category) => {
-	    category.id = this.categories.length;
-	    this.categories.push(category);
-	  };
+		if (this.categories) {
+			return this._$q.when( this.categories )
+		}
+		else {
+			return this._$http.get( this._urlFetch ).then( cacheCategories );
+		}
+	}
 
-		const deleteCategory = (category) => this.categories.filter( (c) => c.id !== category.id );
+	getCurrentCategoryName() {
+		return this.currentCategory ? this.currentCategory.name : '';
+	}
 
-		const getCategoryByName = (categoryName) => {
+	createCategory(category) {
+    category.id = this.categories.length;
+    this.categories.push(category);
+  }
 
-			const hasName = (category) => category.name == categoryName;
-			const findCategory = () => this.categories.find(hasName)
-			const categoryFound = findCategory();
-			let deferred = this.$q.defer();
+	deleteCategory(category) {
+		return this.categories.filter( (c) => c.id !== category.id );
+	}
 
-			if (this.categories) {
-			  deferred.resolve( categoryFound );
-			} else {
-			  this.getCategories()
-					.then( () => deferred.resolve( categoryFound ) )
-			}
+	getCategoryByName(categoryName) {
 
-			return deferred.promise;
+		const hasName = (category) => category.name == categoryName;
+		const findCategory = () => this.categories.find(hasName)
+		const categoryFound = findCategory();
+		let deferred = this._$q.defer();
 
-		};
+		if (this.categories) {
+		  deferred.resolve( categoryFound );
+		} else {
+		  this.getCategories()
+				.then( () => deferred.resolve( categoryFound ) )
+		}
 
-		this.getCurrentCategory = getCurrentCategory;
-		this.getCategories = getCategories;
-		this.getCurrentCategoryName = getCurrentCategoryName;
-		this.setCurrentCategory = setCurrentCategory;
-		this.createCategory = createCategory;
-		this.deleteCategory = deleteCategory;
-		this.getCategoryByName = getCategoryByName;
+		return deferred.promise;
 
 	}
 
