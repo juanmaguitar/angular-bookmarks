@@ -1,69 +1,75 @@
-class BookmarksSrv {
+class BookmarksModel {
 
-	constructor ($http, $q) {
-		this._urlFetch ='data/bookmarks.json';
-		this._$http = $http;
-		this._$q = $q;
+	constructor($http, $q, $rootScope) {
 
-		this._bookmarks = null;
-	}
+		var model = this;
+		var urlFetch ='data/bookmarks.json';
 
-	// get bookmarks() {
-	// 	console.log ("getting bookmarks");
-	// 	return this._bookmarks;
-	// }
+		var bookmarks = null;
 
-	getBookmarks() {
+		model.getBookmarks = getBookmarks;
+		model.createBookmark = createBookmark;
+		model.updateBookmark = updateBookmark;
+		model.deleteBookmark = deleteBookmark;
+		model.getBookmarkById = getBookmarkById;
+		model.getBookmarksForCategory = getBookmarksForCategory;
 
-		const extract = (result) => result.data;
-		const cacheBookmarks = (result) => {
-			this._bookmarks = extract(result);
-			return this._bookmarks;
+		function notifyChanges() {
+			$rootScope.$broadcast('bookmarksChange', bookmarks);
 		}
 
-		// return always a promise
-		if (this._bookmarks) {
-			return this._$q.when(this._bookmarks);
+		function getBookmarks() {
+			const extract = (result) => result.data;
+			function cacheBookmarks(result) {
+				bookmarks = extract(result);
+				return bookmarks;
+			}
+
+			// return always a promise
+			if (bookmarks) {
+				return $q.when(bookmarks);
+			}
+			else {
+				return $http.get( urlFetch )
+					.then( cacheBookmarks );
+			}
 		}
-		else {
-			return this._$http.get( this._urlFetch )
-				.then( cacheBookmarks.bind(this) );
+
+		function createBookmark(bookmark) {
+			const id = bookmarks.length;
+			const newBookmark = Object.assign( {id}, bookmark )
+			bookmarks.push( newBookmark );
+			notifyChanges();
 		}
-	}
 
-	createBookmark(bookmark) {
-		const id = this._bookmarks.length;
-		const newBookmark = Object.assign( {id}, bookmark )
-		this._bookmarks.push( newBookmark );
-	}
+		function updateBookmark(bookmark) {
+			const hasId = (b) => b.id == bookmark.id;
+			let index = bookmarks.findIndex(hasId);
+			bookmarks[index] = bookmark;
+			notifyChanges();
+		}
 
-	updateBookmark(bookmark) {
-		const hasId = (b) => b.id == bookmark.id;
-		let index = this._bookmarks.findIndex(hasId);
-		this._bookmarks[index] = bookmark;
-	}
+		function deleteBookmark(bookmark) {
+			bookmarks = bookmarks.filter( (b) => b.id !== bookmark.id );
+			notifyChanges();
+		}
 
-	deleteBookmark(bookmark) {
-		this._bookmarks = this._bookmarks.filter( (b) => b.id !== bookmark.id )
-		console.log ( this._bookmarks.length )
-	}
+		function getBookmarkById(bookmarkId) {
+			const byId = (bookmark) => bookmark.id == parseInt(bookmarkId, 10);
+			const getById = (bookmarks) => bookmarks.find( byId );
+			return this.getBookmarks().then( getById );
+		}
 
-	getBookmarkById(bookmarkId) {
-		const byId = (bookmark) => bookmark.id == parseInt(bookmarkId, 10);
-		const getById = (bookmarks) => this._bookmarks.find( byId );
-		return this.getBookmarks()
-							.then( getById );
-	}
+		function getBookmarksForCategory(category) {
+			const byCategory = (o) => (o.category == category);
+			const filterByCategory = (bookmarks) => bookmarks.filter( byCategory );
+			return this.getBookmarks().then( filterByCategory );
+		}
 
-	getBookmarksForCategory(category) {
-		const byCategory = (o) => (o.category == category);
-		const filterByCategory = (bookmarks) => bookmarks.filter( byCategory );
-		return this.getBookmarks()
-							.then( filterByCategory );
 	}
 
 }
 
-BookmarksSrv.$inject = ['$http', '$q'];
+BookmarksModel.$inject = ['$http', '$q', '$rootScope'];
 
-export default BookmarksSrv;
+export default BookmarksModel;

@@ -1,8 +1,8 @@
 <div
   ui-sref-active="editing"
   bookmark="bookmark"
-  ng-class="{active: $ctrl.isSelectedBookmark(bookmark.id)}"
-  ng-repeat="bookmark in $ctrl.bookmarks | filter:{category:$ctrl.getCurrentCategoryName()}"
+  ng-class="{active: $ctrl.isSelectedBookmark( bookmark.id )}"
+  ng-repeat="bookmark in $ctrl.bookmarks | filter:{ category:$ctrl.getCurrentCategoryName() }"
 >
 
   <button type="button" class="close" ng-click="$ctrl.deleteBookmark(bookmark)">&times;</button>

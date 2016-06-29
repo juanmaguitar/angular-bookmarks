@@ -2,37 +2,38 @@ class CreateCtrl {
 
 	constructor ($stateParams, $state, bookmarksSrv) {
 
-    this.isCreating = false;
+		var vm = this;
 
-    const returnToBookmarks = () => {
+    vm.isCreating = false;
+    vm.cancelCreating = cancelCreating;
+    vm.createBookmark = createBookmark;
+		vm.returnToBookmarks = returnToBookmarks;
+
+    const toggleCreating = () => vm.isCreating = !vm.isCreating;
+
+    function returnToBookmarks() {
       $state.go('eggly.bookmarks', {
         category: $state.globals.params.category
       })
     }
 
-    const cancelCreating = () => {
-      this.isCreating = false;
-      this.returnToBookmarks();
+    function cancelCreating() {
+      vm.isCreating = false;
+      vm.returnToBookmarks();
     }
 
-    const createBookmark = () => {
-      bookmarksSrv.createBookmark(this.newBookmark);
-      this.returnToBookmarks();
+    function createBookmark() {
+      bookmarksSrv.createBookmark(vm.newBookmark);
+      vm.returnToBookmarks();
     }
 
-    const resetForm = () => {
-      this.newBookmark = {
+    function resetForm() {
+      return vm.newBookmark = {
         title: '',
         url: '',
         category: $state.globals.params.category
       };
     }
-
-    const toggleCreating = () => this.isCreating = !this.isCreating;
-
-    this.cancelCreating = cancelCreating;
-    this.createBookmark = createBookmark;
-		this.returnToBookmarks = returnToBookmarks;
 
     resetForm();
     toggleCreating();

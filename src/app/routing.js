@@ -6,13 +6,13 @@ const bookmarksCtrl =  'bookmarksController';
 
 const url = '/';
 
-import { categories , currentCategory, bookmarks } from './resolvers.js'
+import { categories , currentCategory } from './resolvers.js'
 
 function routing ( $stateProvider, $urlRouterProvider ) {
 	$stateProvider
 		.state('eggly', {
 			url,
-			resolve: { categories, currentCategory, bookmarks },
+			resolve: { categories, currentCategory },
 			views: {
 				'categories': {
 					controller: categoriesCtrl,
