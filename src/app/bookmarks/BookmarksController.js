@@ -2,24 +2,38 @@ class BookmarksCtrl {
 
 	constructor( $rootScope, $stateParams, bookmarksSrv, categoriesSrv )	{
 
-		const currentCategoryName = $stateParams.category || '';
-		const setCurrentCategory = categoriesSrv.setCurrentCategory;
-		const applyBookmarks = (bookmarks) => this.bookmarks = bookmarks;
-		const isSelectedBookmark = (bookmarkId) => $stateParams.bookmarkId == bookmarkId;
+		var $ctrl = this;
 
-		$rootScope.$on('bookmarksChange', (e, data) => this.bookmarks = data );
+		$ctrl.isSelectedBookmark = isSelectedBookmark;
+		$ctrl.getCurrentCategory = categoriesSrv.getCurrentCategory;
+		$ctrl.getCurrentCategoryName = categoriesSrv.getCurrentCategoryName;
+		$ctrl.deleteBookmark = bookmarksSrv.deleteBookmark;
 
-		bookmarksSrv.getBookmarks()
-			.then( applyBookmarks )
+		setCategory();
+		loadRemoteBookmarks();
+		listenToChanges();
 
-  	categoriesSrv.getCategoryByName( currentCategoryName )
-			.then( setCurrentCategory )
+		function loadRemoteBookmarks() {
+			const applyBookmarks = (bookmarks) => $ctrl.bookmarks = bookmarks;
+			bookmarksSrv
+				.getBookmarks()
+				.then( applyBookmarks );
+		}
 
-		this.isSelectedBookmark = isSelectedBookmark;
+		function listenToChanges() {
+			$rootScope.$on('bookmarksChange', (e, data) => $ctrl.bookmarks = data );
+		}
 
-		this.getCurrentCategory = categoriesSrv.getCurrentCategory;
-		this.getCurrentCategoryName = categoriesSrv.getCurrentCategoryName;
-		this.deleteBookmark = bookmarksSrv.deleteBookmark;
+		function setCategory() {
+			const currentCategoryName = $stateParams.category || '';
+			const setCurrentCategory = categoriesSrv.setCurrentCategory;
+			categoriesSrv.getCategoryByName( currentCategoryName )
+				.then( setCurrentCategory )
+		}
+
+		function isSelectedBookmark(bookmarkId) {
+			return $stateParams.bookmarkId == bookmarkId;
+		}
 
 	}
 

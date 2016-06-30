@@ -2,44 +2,47 @@ class EditCtrl {
 
 	constructor( bookmarksSrv, $stateParams, $state ) {
 
-		this.isEditing = false;
+		var $ctrl = this;
 
-    const returnToBookmarks = () =>{
-      $state.go('eggly.bookmarks', {
-        category: this.bookmark.category
-      })
+		$ctrl.isEditing = false;
+    $ctrl.toggleEditing = () => $ctrl.isEditing = !$ctrl.isEditing;
+    $ctrl.cancelEditing = cancelEditing;
+    $ctrl.updateBookmark = updateBookmark;
+
+		setEditState();
+
+    function setEditState() {
+			bookmarksSrv.getBookmarkById($stateParams.bookmarkId)
+    		.then( setState );
     }
 
-    const setEditState = (bookmark) => {
+    function setState(bookmark){
       if (bookmark) {
-        this.isEditing = true;
-        this.bookmark = bookmark;
-        this.editedBookmark = angular.copy(this.bookmark);
+        $ctrl.isEditing = true;
+        $ctrl.bookmark = bookmark;
+        $ctrl.editedBookmark = angular.copy( $ctrl.bookmark );
       }
       else {
-        this.returnToBookmarks();
+        returnToBookmarks();
       }
     }
 
-    const updateBookmark = () => {
-      this.bookmark = angular.copy(this.editedBookmark);
-      bookmarksSrv.updateBookmark(this.editedBookmark);
-      this.returnToBookmarks();
+    function updateBookmark() {
+      $ctrl.bookmark = angular.copy($ctrl.editedBookmark);
+      bookmarksSrv.updateBookmark($ctrl.editedBookmark);
+      returnToBookmarks();
     }
 
-    const cancelEditing = () => {
-      this.isEditing = false;
-      this.returnToBookmarks();
+    function cancelEditing() {
+      $ctrl.isEditing = false;
+      returnToBookmarks();
     }
 
-    bookmarksSrv.getBookmarkById($stateParams.bookmarkId)
-    	.then( setEditState );
-
-    this.toggleEditing = () => this.isEditing = !this.isEditing;
-    this.cancelEditing = cancelEditing;
-    this.updateBookmark = updateBookmark;
-    this.setEditState = setEditState;
-    this.returnToBookmarks = returnToBookmarks;
+    function returnToBookmarks() {
+      $state.go('eggly.bookmarks', {
+        category: $ctrl.bookmark.category
+      })
+    }
 
 	}
 
